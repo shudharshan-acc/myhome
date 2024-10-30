@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyHome</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    
+    /* Navbar Styles */
+    .navbar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #333;
+      padding: 10px 20px;
+      flex-wrap: wrap;
+    }
+    .navbar .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      transition: background 0.3s;
+      display: block; /* Ensures each link takes its own line on mobile */
+    }
+    .navbar a:hover {
+      background-color: #575757;
+    }
+    .navbar-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    /* Main Content Styles */
+    .welcome {
+      text-align: center;
+      margin-top: 20px;
+    }
+    h1 {
+      color: #333;
+      font-size: 2em;
+    }
+
+    /* Profile Page Styles */
+    .profile-container {
+      background: #fff;
+      max-width: 90%;
+      width: 350px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      margin: 20px auto;
+    }
+    .profile-pic {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      object-fit: cover;
+    }
+    .name {
+      font-size: 1.5em;
+      color: #333;
+    }
+    .title {
+      font-size: 1em;
+      color: #777;
+    }
+    .profile-bio {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #555;
+    }
+    .profile-bio h2 {
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+    .social-links {
+      margin-top: 20px;
+    }
+    .social-link {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #3498db;
+      font-weight: bold;
+    }
+    .social-link:hover {
+      color: #1d78d1;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+      }
+      .navbar .logo {
+        margin-bottom: 10px;
+      }
+      .navbar-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .profile-container {
+        width: 100%;
+        padding: 15px;
+      }
+      .profile-pic {
+        width: 70px;
+        height: 70px;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      .profile-bio h2 {
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo"></div>
+    <div class="navbar-links">
+      <a href="/manager/manage/">Profile</a>
+      <a href="/manager/readvideo/">Videos</a>
+      <a href="/manager/readinventory/">Inventory</a>
+      <a href="/security/logout/">Logout</a>
+    </div>
+  </nav>
+
+  <div class="welcome">
+    <h1>Welcome 🙏</h1>
+  </div>
+
+  <!-- Profile Section -->
+  <div id="profile" class="profile-container">
+    <div class="profile-header">
+      <img src="{% static 'img/profileavatar.jpg' %}" alt="Profile Picture" class="profile-pic">
+      <h1 class="name">{{ request.user }}</h1>
+    </div>
+    <div class="profile-bio">
+      <h2>Email Address: {{ request.user.email }}</h2>
+      <h2>Last login: {{ request.user.last_login }}</h2>
+      <h2>Date joined: {{ request.user.date_joined }}</h2>
+      {% if request.user.is_superuser or request.user.is_staff %}
+        <h2>You are an admin</h2>  
+      {% else %}
+        <h2>You are a user</h2>     
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

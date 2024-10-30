@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Video</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Light background for contrast */
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            flex-wrap: wrap;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            transition: background 0.3s;
+            display: block; /* Ensures each link takes its own line on mobile */
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        /* Container styles */
+        .form-container {
+            max-width: 600px;
+            margin: 80px auto; /* Center the container */
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        /* Heading styles */
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Form styles */
+        form {
+            display: flex;
+            flex-direction: column; /* Stack form elements vertically */
+            align-items: center; /* Center align items */
+            width: 100%;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0; /* Space between fields */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        /* Button styles */
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        /* Button hover effect */
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .navbar .logo {
+                margin-bottom: 10px;
+            }
+
+            .navbar-links {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .form-container {
+                margin: 20px; /* Reduce margins on mobile */
+                padding: 15px; /* Adjust padding */
+            }
+
+            /* Ensure buttons have enough padding on smaller screens */
+            button {
+                padding: 12px; /* More padding for easier tapping */
+                font-size: 14px; /* Slightly smaller font size */
+            }
+
+            h1 {
+                font-size: 1.5em; /* Responsive font size */
+            }
+
+            input[type="text"],
+            input[type="url"],
+            input[type="number"] {
+                font-size: 14px; /* Adjust font size for inputs */
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo"></div>
+        <div class="navbar-links">
+            <a href="/manager/manage/">Profile</a>
+            <a href="/manager/readvideo/">Videos</a>
+            <a href="/manager/readinventory/">Inventory</a>
+            <a href="/security/logout/">Logout</a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <h1>Add Video</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                <!-- <label for="id_username">Username:</label> -->
+                <input type="text" value="{{ request.user }}" name="username" maxlength="200" id="id_username" hidden>
+            </div>
+
+            <div>
+                <label for="id_vidname">Video name:</label>
+                <input type="text" name="vidname" maxlength="200" id="id_vidname">
+            </div>
+
+            <div>
+                <p><h3>Enter only embed link:</h3></p>
+                </p>
+                <label for="id_link">Link:</label>
+                <input type="url" name="link" maxlength="1000" id="id_link">
+            </div>
+
+            <button type="submit">Add Video</button>
+        </form>
+        <br>
+        <a href="/manager/readvideo/" ><button>Cancel</button></a>
+    </div>
+</body>
+<style>
+</style>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyHome Login</title>
+    <style>
+        /* Body and background styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light background for better contrast */
+            margin: 0;
+            padding: 0;
+            width: 97%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            width: 100%;
+            padding: 10px 20px;
+            position: absolute; /* Fixed navbar at the top */
+            top: 0;
+            z-index: 1000; /* Ensure navbar is above other content */
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            transition: background 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: white; /* Make the logo visible */
+        }
+
+        /* Main container for the login form */
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            margin-top: 80px; /* Space for navbar */
+        }
+
+        /* Logo or title styles */
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        /* Input field styles */
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        /* Button styles */
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        /* Button hover effect */
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Error message styles */
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar a {
+                padding: 10px;
+                width: 100%;
+                text-align: left;
+            }
+
+            .login-container {
+                margin-top: 60px; /* Adjusted margin for smaller screens */
+            }
+
+            h1 {
+                font-size: 22px; /* Smaller font size for mobile */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo"></div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/security/login/">Login</a>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="adminLoginForm" action="/security/login/" method="post">
+            {{ form }} 
+            {% csrf_token %}
+            <button type="submit">Login</button>
+            <div id="formMessage" class="error"></div> <!-- Message for validation errors -->
+        </form>
+    </div>
+
+    <script>
+        // Form validation logic
+        document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
+            let isValid = true; // Flag to track form validity
+            const formMessage = document.getElementById("formMessage");
+            formMessage.textContent = ""; // Clear previous messages
+
+            // Check if the form fields are empty
+            const inputs = this.querySelectorAll("input[type='text'], input[type='password']");
+            inputs.forEach(function (input) {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    formMessage.textContent += `${input.placeholder || 'This field'} is required.\n`; // Show message
+                }
+            });
+
+            // Prevent form submission if there are validation errors
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+
+</html>

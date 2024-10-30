@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Added for better padding calculation */
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+        <h1>Register a New User</h1>
+        <form id="registerForm" action="/security/register/" method="post">
+            {{ form }}  <!-- Assuming you are using Django Crispy Forms -->
+            {% csrf_token %}
+            <button type="submit">Submit</button>
+            <div id="formMessage" class="error"></div> <!-- Message for validation errors -->
+        </form>
+
+
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            let isValid = true; // Flag to track form validity
+            const formMessage = document.getElementById("formMessage");
+            formMessage.textContent = ""; // Clear previous messages
+
+            // Check if the form fields are empty
+            const inputs = this.querySelectorAll("input[type='text'], input[type='password'], input[type='email']");
+            inputs.forEach(function(input) {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    formMessage.textContent += `${input.placeholder || 'This field'} is required.\n`; // Show message
+                }
+            });
+
+            // Prevent form submission if there are validation errors
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

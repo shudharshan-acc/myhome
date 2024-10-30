@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyHome</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #333;
+      padding: 10px 20px;
+      flex-wrap: wrap;
+
+    }
+    .navbar .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      transition: background 0.3s;
+      display: block; /* Ensures each link takes its own line on mobile */
+    }
+    .navbar a:hover {
+      background-color: #575757;
+    }
+    .navbar-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    /* Add Video Button Styles */
+    .add-video-button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      text-decoration: none; /* No underline */
+      transition: background 0.3s;
+      cursor: pointer; /* Pointer cursor for buttons */
+      margin: 0 2px; /* Margin between buttons */
+      font-size: 13px; /* Consistent font size */
+      size: 15px;
+    }
+    .add-video-button:hover {
+      background-color: #2980b9; /* Darker blue on hover */
+    }
+
+    /* Search Styles */
+    .search-container {
+      display: flex;
+      align-items: center;
+    }
+    .search-input {
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      margin-right: 5px;
+      width: 200px; /* Fixed width for search input */
+    }
+    .search-button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .search-button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Video Gallery Styles */
+    .video-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      padding: 20px;
+    }
+    .video-item {
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .video-item iframe {
+      width: 100%;
+      height: 200px;
+      border-radius: 8px;
+    }
+    .video-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #333;
+    }
+
+    /* Inventory Table Styles */
+    .inventory-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden; /* Ensures rounded corners work */
+    }
+    .inventory-table th,
+    .inventory-table td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 12px;
+      transition: background 0.3s; /* Smooth transition for hover */
+    }
+    .inventory-table th {
+      background-color: #3498db;
+      color: white;
+      font-size: 18px;
+    }
+    .inventory-table tr:nth-child(even) {
+      background-color: #f2f2f2; /* Light gray for even rows */
+    }
+    .inventory-table tr:hover {
+      background-color: #e0e0e0; /* Highlight row on hover */
+    }
+
+    /* Mobile Adjustments */
+    @media (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+      }
+      .navbar .logo {
+        margin-bottom: 10px;
+      }
+      .navbar-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .video-gallery {
+        grid-template-columns: 1fr;
+      }
+      .search-container {
+        width: 100%;
+        margin-top: 10px;
+      }
+      .search-input {
+        width: 100%; /* Full width on mobile */
+        margin-right: 0; /* Remove margin on mobile */
+      }
+    }
+    .alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.6s;
+  margin-bottom: 15px;
+}
+
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo"></div>
+    <div class="navbar-links">
+      <a href="/manager/manage/">Profile</a>
+      <a href="/manager/readvideo/">Videos</a>
+      <a href="/manager/readinventory/">Inventory</a>
+      <a href="/security/logout/">Logout</a>
+    </div>
+    <div class="search-container">
+      <form action="/manager/readinventory/" method="post">
+        <input type="text" class="search-input" placeholder="Search..." name="search">
+        <button class="search-button">Search</button>
+        {% csrf_token %}
+      </form>
+    </div>
+  </nav>
+  <div style="display: flex; justify-content: flex-end; padding: 10px;">
+    <a href="/manager/additem/" class="add-video-button">Add Item</a>
+  </div>
+  <!-- Inventory Table -->
+  <table class="inventory-table">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in inv %}
+      {%if i.quan == 1%}
+      <div class="alert">
+        <span class="closebtn">&times;</span>  
+        <strong>Danger!</strong> {{i.item}} is getting over soon...
+      </div>
+      {% endif %}
+      <tr>
+        <td>{{ i.item }}</td>
+        <td>{{ i.quan }} {{i.units}}<a href="/manager/incrementitem/{{i.id}}/{{request.user}}"><button class="add-video-button">+</button></a>
+          <a href="/manager/decrementitem/{{i.id}}/{{request.user}}"><button class="add-video-button">-</button></a></td>
+        <td>
+          <a href="/manager/deleteitem/{{i.id}}/{{request.user}}"> <button class="add-video-button">Delete</button> </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</body>
+<script>
+  var close = document.getElementsByClassName("closebtn");
+  var i;
+  
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function(){
+      var div = this.parentElement;
+      div.style.opacity = "0";
+      setTimeout(function(){ div.style.display = "none"; }, 600);
+    }
+  }
+  </script>
+</html>
